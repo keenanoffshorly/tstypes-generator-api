@@ -1,0 +1,1 @@
+# tstypes-generator-api
