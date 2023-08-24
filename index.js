@@ -1,8 +1,11 @@
 const express = require("express");
 const runTypeGenerator = require("./services/typeGenerator");
-
+const cors = require("cors");
+const createObjectsFromFile = require("./services/extractTypescript");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 8000;
+
+app.use(cors());
 app.use(express.json());
 
 app.get("/download", (req, res) => {
@@ -15,6 +18,13 @@ app.get("/download", (req, res) => {
       });
     }
   });
+});
+
+app.get("/get-typescript-objects", (req, res) => {
+  const filePath = __dirname + "/generated-ts/types.ts";
+  const objects = createObjectsFromFile(filePath);
+
+  return res.status(201).send(objects);
 });
 
 app.post("/generate", (req, res) => {
